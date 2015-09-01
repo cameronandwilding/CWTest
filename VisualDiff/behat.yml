@@ -1,0 +1,19 @@
+default:
+  paths:
+    bootstrap: 'features/bootstrap'
+  extensions:
+    Behat\MinkExtension\Extension:
+      default_session: selenium2
+      browser_name: firefox
+      selenium2: ~
+    Zodyac\Behat\PerceptualDiffExtension\Extension:
+      sleep: 0
+      path: ../Results/VisualDiff
+      fail_on_diff: true
+      compare:
+        highlight_color: red
+        metric: AE
+        fuzz: 20
+
+imports:
+  - behat.local.yml

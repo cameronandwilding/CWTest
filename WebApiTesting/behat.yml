@@ -1,0 +1,10 @@
+default:
+  suites:
+    api_tests:
+      paths:    [ %paths.base%/features/PROJECTNAME_api.feature ]
+      contexts: [ Behat\WebApiExtension\Context\WebApiContext ]
+  extensions:
+    Behat\WebApiExtension: ~
+
+imports:
+  - behat.local.yml

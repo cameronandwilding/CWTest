@@ -1,0 +1,6 @@
+default:
+  extensions:
+    Behat\WebApiExtension:
+      #base_url: LOCAL-SITE-URL
+      base_url: http://debates.local
+

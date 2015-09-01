@@ -1,0 +1,15 @@
+{
+ "require": {
+    "behat/behat": "3.0.x-dev",
+    "behat/mink": "~1.6.0",
+    "behat/mink-selenium2-driver": "~1.2.0",
+    "behat/mink-extension": "~2.0.0",
+    "emuse/behat-html-formatter": "0.1.0",
+    "drupal/drupal-extension": "~3.0",
+    "behat/web-api-extension": "~1.0@dev",
+    "deminy/behat-rest-testing": "@dev"
+  },
+  "config": {
+    "bin-dir": "bin/"
+  }
+}

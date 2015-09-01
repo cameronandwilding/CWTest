@@ -1,0 +1,5 @@
+default:
+  extensions:
+    Behat\MinkExtension\Extension:
+      #base_url: LOCAL-SITE-URL
+      base_url: http://time.is

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures/fallback" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/gherkin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/brianium/paratest/test/unit" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/brianium/paratest/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/brianium/paratest/test/functional" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/drupal/drupal-extension/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/drupal/drupal-driver/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/drupal/drupal-driver/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures/alpha" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures/beta" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures/Apc/fallback" isTestSource="false" packagePrefix="Apc" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures/Apc/alpha" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/symfony/class-loader/Tests/Fixtures/Apc/beta" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/fabpot/goutte" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/instaclick/php-webdriver/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/instaclick/php-webdriver/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/sensiolabs/behat-page-object-extension" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/mink-extension" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/drupal/drupal-extension" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/drupal/drupal-driver" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/brianium/habitat/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/brianium/habitat/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/gherkin/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/mink-browserkit-driver/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/mink-selenium2-driver/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/mink-goutte-driver/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/transliterator/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/behat/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/behat/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/behat/mink-extension/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/guzzlehttp/guzzle/src" isTestSource="false" packagePrefix="GuzzleHttp" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/guzzlehttp/guzzle" isTestSource="false" packagePrefix="GuzzleHttp" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/sensiolabs/behat-page-object-extension/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/sauce/sausage/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/sauce/sausage-installer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/chartinger/behat-twig-report-extension/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Behat/vendor/brianium/paratest/test/fixtures/special-classes" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar://$MODULE_DIR$/WebApiTesting/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+          <root url="phar://$MODULE_DIR$/Behat/composer.phar" />
+          <root url="phar://$MODULE_DIR$/VisualDiff/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+          <root url="phar://$MODULE_DIR$/Behat/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+        </CLASSES>
+        <SOURCES>
+          <root url="phar://$MODULE_DIR$/WebApiTesting/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+          <root url="phar://$MODULE_DIR$/Behat/composer.phar" />
+          <root url="phar://$MODULE_DIR$/VisualDiff/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+          <root url="phar://$MODULE_DIR$/Behat/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

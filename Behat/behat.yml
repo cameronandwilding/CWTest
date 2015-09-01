@@ -1,0 +1,52 @@
+default:
+  suites:
+    behat_suite:
+      contexts:
+        - PROJECTNAMEContext
+        - CWContext:
+            parameters:
+              screenshots: %paths.base%/../Results/Behat/screenshots
+              repository: %paths.base%/features/bootstrap
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+  extensions:
+    Behat\MinkExtension:
+      files_path: %paths.base%/images
+      selenium2:
+        wd_host: "http://localhost:4444/wd/hub"
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drupal'
+      text:
+        log_out: "Log out"
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+       name: html
+       renderer: Twig
+       file_name: report
+  formatters:
+    junit:
+      output_path: %paths.base%/../Results/Behat
+    html:
+      output_path: %paths.base%/../Results/Behat
+
+imports:
+  - behat.local.yml
+
+chrome:
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      browser_name: chrome
+
+firefox:
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      browser_name: firefox
+
+phantomjs:
+  extensions:
+    Behat\MinkExtension:
+      selenium2:
+        wd_host: "http://localhost:4445/wd/hub"
+

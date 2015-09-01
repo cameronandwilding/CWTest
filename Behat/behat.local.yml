@@ -1,0 +1,9 @@
+default:
+  extensions:
+    Behat\MinkExtension:
+      #base_url: LOCAL-SITE-URL
+      base_url: http://debates.local
+    Drupal\DrupalExtension:
+      drupal:
+        #drupal_root: PATH-TO-DRUPAL-INSTALL
+        drupal_root: /Applications/MAMP/htdocs/economist-debates/webroot
