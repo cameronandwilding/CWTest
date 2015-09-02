@@ -1,0 +1,20 @@
+# Ignore cache/phpStorm generated files
+.idea/
+
+# Ignore files/directories created by tool installs
+# Behat 3
+Behat/cache
+
+# JMeter
+
+# Servers
+
+# VisualDiff
+VisualDiff/.idea
+VisualDiff/cache
+VisualDiff/*/behat
+VisualDiff/*/bin
+VisualDiff/*/composer
+VisualDiff/*/instaclick
+VisualDiff/*/symfony
+VisualDiff/*/autoload.php
