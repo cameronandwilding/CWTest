@@ -37,13 +37,13 @@ Test Execution
 Behat:
 1. Open a terminal window.
 2. Navigate to <LOCAL DRUPAL INSTALL>/cw_test/Behat
-3. To excute the tests, select one of the following options based on the format 'sh run-beht.sh <tag> <profile>':
+3. To execute the tests, select one of the following options based on the format 'sh run-behat.sh <tag> <profile>':
  - sh run-behat.sh smoke chrome
  - sh run-behat.sh regression chrome
  - sh run-behat.sh smoke firefox
  - sh run-behat.sh regression firefox
  - sh run-behat.sh smoke phantomjs
- - sh run-behat.sh regression phantomjs
+ - sh run-behat.sh regression phantomjs (recommended)
 
 Visual Diff:
 1. Open a terminal window.

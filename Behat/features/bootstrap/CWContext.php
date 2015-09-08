@@ -590,9 +590,8 @@ JS;
   /**
    * @Given I check the HTTP response code is :code for :url
    */
-  public function iCheckTheHttpResponseCodeIsFor($code, $url)
-  {
-    $path = $this->getMinkParameter('base_url') .$url;
+  public function iCheckTheHttpResponseCodeIsFor($code, $url) {
+    $path = $this->getMinkParameter('base_url') . $url;
     $response = $this->getHTTPResponseCode($path);
     if ($response != $code) {
       throw new Exception('The status code for {$url} was {$response}');
@@ -858,38 +857,47 @@ JS;
     $countObjects++;
     foreach ($arrNodes as $node) {
       $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] =  $xpathDOM->query("@name", $node)->item(0)->nodeValue;
-      $arrObjects[$countObjects]['value'] =  $xpathDOM->query("@value", $node)->item(0)->nodeValue;
+      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['value'] = $xpathDOM->query("@value", $node)
+        ->item(0)->nodeValue;
       $countObjects++;
     }
 
-     //  Extract all text fields
+    //  Extract all text fields
     $textXpath = "//input[@type='text']";
     $arrNodes = $this->getNodesMatchingXpath($dom, $textXpath);
     $arrObjects[$countObjects]['OBJECT TYPE'] = 'TEXT';
     $countObjects++;
     foreach ($arrNodes as $node) {
       $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] =  $xpathDOM->query("@name", $node)->item(0)->nodeValue;
-      $arrObjects[$countObjects]['value'] =  $xpathDOM->query("@value", $node)->item(0)->nodeValue;
+      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['value'] = $xpathDOM->query("@value", $node)
+        ->item(0)->nodeValue;
       $countObjects++;
     }
 
-     //  Extract all checkboxes
-     $checkboxXpath = "//input[@type='checkbox']";
-     $arrNodes = $this->getNodesMatchingXpath($dom, $checkboxXpath);
-     $arrObjects[$countObjects]['OBJECT TYPE'] = 'CHECKBOX';
+    //  Extract all checkboxes
+    $checkboxXpath = "//input[@type='checkbox']";
+    $arrNodes = $this->getNodesMatchingXpath($dom, $checkboxXpath);
+    $arrObjects[$countObjects]['OBJECT TYPE'] = 'CHECKBOX';
+    $countObjects++;
+    foreach ($arrNodes as $node) {
       $countObjects++;
-     foreach ($arrNodes as $node) {
-       $countObjects++;
-       $xpathDOM = new DomXPath($dom);
-       $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)->item(0)->nodeValue;
-       $arrObjects[$countObjects]['name'] =  $xpathDOM->query("@name", $node)->item(0)->nodeValue;
-       $arrObjects[$countObjects]['value'] =  $xpathDOM->query("@value", $node)->item(0)->nodeValue;
-       $countObjects++;
-     }
+      $xpathDOM = new DomXPath($dom);
+      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['value'] = $xpathDOM->query("@value", $node)
+        ->item(0)->nodeValue;
+      $countObjects++;
+    }
 
     //  Extract all dropdowns
     $dropdownXpath = "//select";
@@ -899,8 +907,10 @@ JS;
     foreach ($arrNodes as $node) {
       $countObjects++;
       $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] =  $xpathDOM->query("@name", $node)->item(0)->nodeValue;
+      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
+        ->item(0)->nodeValue;
       $countObjects++;
     }
 
@@ -912,8 +922,10 @@ JS;
     foreach ($arrNodes as $node) {
       $countObjects++;
       $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] =  $xpathDOM->query("@name", $node)->item(0)->nodeValue;
+      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
+        ->item(0)->nodeValue;
+      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
+        ->item(0)->nodeValue;
       $countObjects++;
     }
 
@@ -934,8 +946,4 @@ JS;
 
     file_put_contents($filePath . '/' . $file, $strObjects);
   }
-
-
-
-
 }
