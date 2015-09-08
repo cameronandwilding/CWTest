@@ -23,6 +23,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
   const MESSAGE_REGION = 'message_region';
   const SUCCESS_MESSAGE_REGION = 'success_message_region';
   const ERROR_MESSAGE_REGION = 'error_message_region';
+  const LOGIN_ERROR_MESSAGE_REGION = 'login_error_message_region';
 
   /**
    * Error code
@@ -579,6 +580,26 @@ JS;
    *******************************************************************************/
 
   /**
+   * @Given get the HTTP response code :url
+   */
+  public function getHTTPResponseCode($url) {
+    $headers = get_headers($url, 1);
+    return substr($headers[0], 9, 3);
+  }
+
+  /**
+   * @Given I check the HTTP response code is :code for :url
+   */
+  public function iCheckTheHttpResponseCodeIsFor($code, $url)
+  {
+    $path = $this->getMinkParameter('base_url') .$url;
+    $response = $this->getHTTPResponseCode($path);
+    if ($response != $code) {
+      throw new Exception('The status code for {$url} was {$response}');
+    }
+  }
+
+  /**
    * @Given I should get the following HTTP status responses:
    */
   public function iShouldGetTheFollowingHTTPStatusResponses(TableNode $table) {
@@ -694,6 +715,16 @@ JS;
     foreach ($messages->getHash() as $key => $value) {
       $message = trim($value['ERROR MESSAGE']);
       $this->iCanSeeInTheRegion($message, self::ERROR_MESSAGE_REGION);
+    }
+  }
+
+  /**
+   * @Given the following login error messages are displayed:
+   */
+  public function theFollowingLoginErrorMessagesAreDisplayed(TableNode $messages) {
+    foreach ($messages->getHash() as $key => $value) {
+      $message = trim($value['ERROR MESSAGE']);
+      $this->iCanSeeInTheRegion($message, self::LOGIN_ERROR_MESSAGE_REGION);
     }
   }
 

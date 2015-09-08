@@ -4,10 +4,17 @@
 # Ignore files/directories created by tool installs
 # Behat 3
 Behat/cache
+Behat/vendor
+Behat/bin
+Behat/composer.lock
 
 # JMeter
 
+# Results
+Results
+
 # Servers
+Servers/selenium.jar
 
 # VisualDiff
 VisualDiff/.idea
@@ -18,3 +25,4 @@ VisualDiff/*/composer
 VisualDiff/*/instaclick
 VisualDiff/*/symfony
 VisualDiff/*/autoload.php
+VisualDiff/composer.lock
