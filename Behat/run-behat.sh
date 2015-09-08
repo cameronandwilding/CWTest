@@ -3,6 +3,9 @@
 #  Start PhantomJS webdriver
 sh ../Servers/start_phantomjs_webdriver.sh
 
+#  Copy project specific feature files into the submodule.case
+cp ../../Project.feature features/
+
 #  Run Behat tests
 #   - $1 passed from Jenkins job / command line - the tags to be used.
 #   - $2 passed from Jenkins job / command line - the profile to be used.
