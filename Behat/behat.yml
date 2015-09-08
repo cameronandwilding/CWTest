@@ -2,7 +2,7 @@ default:
   suites:
     behat_suite:
       contexts:
-        - PROJECTNAMEContext
+        - ProjectContext
         - CWContext:
             parameters:
               screenshots: %paths.base%/../Results/Behat/screenshots

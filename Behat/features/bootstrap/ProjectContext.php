@@ -9,10 +9,10 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Context\Context;
 
 /**
- * Class PROJECTNAMEContext
+ * Class ProjectContext
  * Defines application specific functions.
  */
-class PROJECTNAMEContext implements  Context {
+class ProjectContext implements  Context {
 
   /**
    * @var CWContext
