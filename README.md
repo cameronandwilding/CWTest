@@ -1,4 +1,4 @@
-IWM - AUTOMATION TESTS
+AUTOMATION TESTS
 ======================
 
 Tool setup
