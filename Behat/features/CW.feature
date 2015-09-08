@@ -1,11 +1,7 @@
-Feature: PROJECT NAME
-  In order to (to what?)
-  As a (as a what?)
-  I need (what do you need?)
-
-  Rules:
-  - Rule 1
-  - Rule 2
+Feature: CW Feature
+  In order to test any drupal site
+  As a mix of users
+  I need to run some basic sanity tests scross the entire site
 
 
 ############################################################################################################
