@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function isSeleniumServerRunning {
+function checkAndStartSeleniumServer {
   if ! lsof -i:4444
   then
     echo Port 4444 is free
@@ -17,5 +17,5 @@ function runSeleniumServer {
   java -jar ../Servers/selenium.jar -port 4444 -trustAllSSLCertificates &
 }
 
-isSeleniumServerRunning
+checkAndStartSeleniumServer
 
