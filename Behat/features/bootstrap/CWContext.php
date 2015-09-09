@@ -124,7 +124,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
     $this->randomItems->number = date("U");
 
     // Generate a random alphanumeric string
-    $this->randomItems->alpha_number = uniqid();
+    $this->randomItems->alphaNumber = uniqid();
 
     // Generate a random string
     $this->randomItems->alpha = substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
@@ -735,13 +735,6 @@ JS;
    *******************************************************************************/
 
   /**
-   * @Given I save the HTML of the page
-   */
-  public function savePageHTML() {
-    $this->html = $this->getSession()->getPage()->getHTML();
-  }
-
-  /**
    * @Given I create a DOM object from the HTML of the page
    *
    * Assume result rows always start with the 'em' tag.
@@ -954,8 +947,22 @@ JS;
  */
 class RandomItems {
 
+  /**
+   * A random number.
+   * @var integer
+   */
   public $number;
-  public $alpha_number;
+
+  /**
+   * A random alphanumeric string.
+   * @var string
+   */
+  public $alphaNumber;
+
+  /**
+   * A random string.
+   * @var string
+   */
   public $alpha;
 
 }

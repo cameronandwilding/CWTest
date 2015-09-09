@@ -1,5 +1,5 @@
 # Ignore cache/phpStorm generated files
-
+.idea
 
 # Ignore files/directories created by tool installs
 # Behat 3
@@ -11,7 +11,7 @@ Behat/bin
 JMeter/jmeter.log
 
 # Results
-
+Results
 
 # Servers
 Servers/selenium.jar
