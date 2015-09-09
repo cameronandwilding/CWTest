@@ -6,7 +6,7 @@ Tool setup
 
 Behat/Visual Diff:
 1. Install Behat, Visual Diff and Selenium Server:
-    - sh composer_install.sh
+    - sh bootstrap.sh
     
 2. Modify your local Behat configuration file. Inside 'Behat/behat.local.yml', update:
       - the base_url to your local site url
@@ -16,16 +16,16 @@ Behat/Visual Diff:
       - the base_url to your local site url
 
 NodeJS and PhantomJS:
-1. Install NodeJS:
+1. Install NodeJS to /usr/local/bin:
  - sudo npm install -g nodejs
  
-2. Install PhantomJS:
+2. Install PhantomJS /usr/local/bin:
  - sudo npm install -g phantomjs
 
 
 Install chromedriver (optional step):
 1. Download chromedriver from http://chromedriver.storage.googleapis.com/index.html?path=2.17/
-2. Save it to /usr/bin
+2. Save it to /usr/local/bin
 
 Install safaridriver (optional step):
 1. Download SafariDriver.safariextz from http://selenium-release.storage.googleapis.com/index.html?path=2.45/

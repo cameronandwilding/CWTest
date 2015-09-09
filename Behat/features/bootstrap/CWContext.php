@@ -1,8 +1,6 @@
 <?php
 /**
  * @file
- *
- * CWContext contains supporting functions for all Behat projects.
  */
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
@@ -14,51 +12,40 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 
 /**
  * Class CWHelperContext
+ *
+ * CWContext contains supporting functions for all Behat projects.
  */
 class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
 
-  /**
-   * Repository Objects constants
-   */
+  // Repository Objects constants.
   const MESSAGE_REGION = 'message_region';
   const SUCCESS_MESSAGE_REGION = 'success_message_region';
   const ERROR_MESSAGE_REGION = 'error_message_region';
   const LOGIN_ERROR_MESSAGE_REGION = 'login_error_message_region';
 
-  /**
-   * Error code
-   */
+  // Error code.
   const ERROR_CODE = 99;
 
-  /**
-   * Timeout value in ms
-   */
+  // Timeout value in ms.
   const TIMEOUT = 15000;
 
-  /**
-   * Wait value in ms
-   */
+  // Wait value in ms.
   const WAIT = 1000;
 
-  /**
-   * Browser width
-   */
+  // Browser width.
   const WIDTH = 1440;
 
-  /**
-   * Browser height
-   */
+  // Browser height.
   const HEIGHT = 900;
 
-  /**
-   * Max number of retries
-   */
+  // Max number of retries.
   const RETRIES = 30;
 
-  /**
-   * One second
-   */
+  // One second.
   const SECOND_TO_SLEEP = 1;
+
+  //  Date format.
+  const DATE_FORMAT_CONCISE = "dmY-His";
 
   /**
    * Parameters inherited from the .yml file
@@ -68,9 +55,9 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   /**
    * Variable strings and numbers
-   * @var string
+   * @var RandomItems
    */
-  public $vars;
+  public $randomItems;
 
   /**
    * @var MinkContext
@@ -131,14 +118,16 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
    * Generate random numbers/strings to be used throughout the scenarios.
    */
   public function generateRandomStrings() {
+    $this->randomItems = new RandomItems();
+
     // Generate a random number
-    $this->vars['randnum'] = date("U");
+    $this->randomItems->number = date("U");
 
     // Generate a random alphanumeric string
-    $this->vars['randalphanum'] = uniqid();
+    $this->randomItems->alpha_number = uniqid();
 
     // Generate a random string
-    $this->vars['randalpha'] = substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+    $this->randomItems->alpha = substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
   }
 
   /**
@@ -161,13 +150,13 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
 
       if ($driver instanceof \Behat\Mink\Driver\BrowserKitDriver) {
         $html_data = $this->getSession()->getDriver()->getContent();
-        $fileName = date("dmY-His") . '-' . $failed_test_step . '.html';
+        $fileName = date(self::DATE_FORMAT_CONCISE) . '-' . $failed_test_step . '.html';
         file_put_contents($filePath . '/' . $fileName, $html_data);
         return;
       }
 
       if ($driver instanceof \Behat\Mink\Driver\Selenium2Driver) {
-        $fileName = date("dmY-His") . '-' . $failed_test_step . '.jpg';
+        $fileName = date(self::DATE_FORMAT_CONCISE) . '-' . $failed_test_step . '.jpg';
         $this->saveScreenshot($fileName, $filePath);
         return;
       }
@@ -245,7 +234,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
       sleep(1);
     }
 
-    throw new Exception("Timeout thrown by spinner - element {$locator} is not visible after 30 seconds.");
+    throw new CWContextException("Timeout thrown by spinner - element {$locator} is not visible after 30 seconds.");
   }
 
   /**
@@ -297,7 +286,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
    * @Given I select the :modal modal
    */
   public function iSelectTheModal($modal) {
-    $this->getSession()->switchToIFrame($arg1);
+    $this->getSession()->switchToIFrame($modal);
   }
 
   /**
@@ -385,7 +374,7 @@ JS;
       $element->click();
     }
     else {
-      throw new Exception("The element " . $class . " does not exist");
+      throw new CWContextException("The element " . $class . " does not exist");
     }
   }
 
@@ -393,16 +382,16 @@ JS;
    * @Given I fill in :field field with :value
    */
   public function iFillInFieldWith($field, $value) {
-    $value = str_replace('<randnum>', $this->vars['randnum'], $value);
-    $value = str_replace('<randalphanum>', $this->vars['randalphanum'], $value);
-    $value = str_replace('<randalpha>', $this->vars['randalpha'], $value);
-    $value = str_replace('<datetime>', date("dmY-His"), $value);
+    $value = str_replace('<number>', $this->randomItems->number, $value);
+    $value = str_replace('<alpha_number>', $this->randomItems->alpha_number, $value);
+    $value = str_replace('<alpha>', $this->randomItems->alpha, $value);
+    $value = str_replace('<datetime>', date(self::DATE_FORMAT_CONCISE), $value);
     $element = $this->getSession()->getPage()->findById($field);
     if ($element) {
       $element->setValue($value);
     }
     else {
-      throw new Exception("The element " . $field . " does not exist");
+      throw new CWContextException("The element " . $field . " does not exist");
     }
   }
 
@@ -411,12 +400,12 @@ JS;
    * This function allows you to click an element identified by an xpath.
    */
   public function iClickElementWithXpath($xpath) {
-    $element = $this->getSession()->getPage()->find('xpath', $arg1);
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
     if ($element) {
       $element->click();
     }
     else {
-      throw new Exception("The element " . $arg1 . " does not exist");
+      throw new CWContextException("The element " . $xpath . " does not exist");
     }
   }
 
@@ -430,7 +419,7 @@ JS;
       $element->setValue($value);
     }
     else {
-      throw new Exception("The element " . $field . " does not exist");
+      throw new CWContextException("The element " . $field . " does not exist");
     }
   }
 
@@ -448,7 +437,7 @@ JS;
     try {
       $this->getSession()->executeScript($function);
     } catch (Exception $e) {
-      throw new Exception("The scroll into view for element " . $element_id . " did not work");
+      throw new CWContextException("The scroll into view for element " . $element_id . " did not work");
     }
   }
 
@@ -460,7 +449,7 @@ JS;
     // Check the dropdown exists
     $dropdown = $this->getSession()->getPage()->findField($dropdown);
     if (NULL === $dropdown) {
-      throw new Exception("The element " . $arg1 . " does not exist");
+      throw new CWContextException("The element " . $dropdown . " does not exist");
     }
     else {
       // Get an array of all the entries in the dropdown
@@ -498,7 +487,7 @@ JS;
       // Select that numbered entry from the dropdown.
       $this->getSession()
         ->getDriver()
-        ->selectOption('//*[@id="' . $arg1 . '"]', $value);
+        ->selectOption('//*[@id="' . $dropdown . '"]', $value);
     }
   }
 
@@ -560,13 +549,13 @@ JS;
           break;
 
         default:
-          throw new Exception("The identifier $identifier is not valid for this function.");
+          throw new CWContextException("The identifier $identifier is not valid for this function.");
       }
 
       //  Get all the nodes matching the xpath and verify the count.
       $nodes = $this->getNodesMatchingXpath($dom, $xpath);
       if ($nodes->length === 0) {
-        throw new Exception("The field '$field' was not found");
+        throw new CWContextException("The field '$field' was not found");
       }
     }
   }
@@ -594,7 +583,7 @@ JS;
     $path = $this->getMinkParameter('base_url') . $url;
     $response = $this->getHTTPResponseCode($path);
     if ($response != $code) {
-      throw new Exception('The status code for {$url} was {$response}');
+      throw new CWContextException('The status code for {$url} was {$response}');
     }
   }
 
@@ -746,9 +735,9 @@ JS;
    *******************************************************************************/
 
   /**
-   * @Given I get the HTML of the page
+   * @Given I save the HTML of the page
    */
-  public function getPageHTML() {
+  public function savePageHTML() {
     $this->html = $this->getSession()->getPage()->getHTML();
   }
 
@@ -760,7 +749,7 @@ JS;
   public function createDOMOfPage() {
     $dom = new DOMDocument();
     libxml_use_internal_errors(TRUE);
-    $dom->loadHTML($this->html);
+    $dom->loadHTML($this->getHtml());
     $dom->preserveWhiteSpace = FALSE;
     return $dom;
   }
@@ -805,7 +794,7 @@ JS;
         break;
 
       default:
-        throw new Exception("This asset '{$assetType}' is not a valid value for this test.");
+        throw new CWContextException("This asset '{$assetType}' is not a valid value for this test.");
     }
 
     //  Get all the assets matching the xpath.
@@ -826,7 +815,7 @@ JS;
 
       $statusCode = $this->getSession()->getStatusCode();
       if ($statusCode !== 200) {
-        throw new Exception("This '{$assetType}' asset did not return a 200 response - {$assetToCheck}.");
+        throw new CWContextException("This '{$assetType}' asset did not return a 200 response - {$assetToCheck}.");
       }
     }
   }
@@ -841,7 +830,6 @@ JS;
 
     //  Go to page
     $this->visitPath($page);
-    $this->getPageHTML();
 
     //  Get a DOM of the current page.
     $dom = $this->createDOMOfPage();
@@ -946,4 +934,37 @@ JS;
 
     file_put_contents($filePath . '/' . $file, $strObjects);
   }
+
+  /**
+   * @return string
+   */
+  public function getHtml() {
+    if (empty($this->html)) {
+      $this->html = $this->getSession()->getPage()->getHTML();
+    }
+
+    return $this->html;
+  }
+}
+
+/**
+ * Class RandomItems
+ *
+ * A class to store random numbers and strings.
+ */
+class RandomItems {
+
+  public $number;
+  public $alpha_number;
+  public $alpha;
+
+}
+
+/**
+ * Class CWContextException
+ *
+ * A class to handle exceptions.
+ */
+class CWContextException extends Exception {
+
 }

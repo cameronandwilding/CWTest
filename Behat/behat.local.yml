@@ -1,7 +1,0 @@
-default:
-  extensions:
-    Behat\MinkExtension:
-      base_url: http://showandtell.local
-    Drupal\DrupalExtension:
-      drupal:
-        drupal_root: /Applications/MAMP/htdocs/show-and-tell-d8/webroot

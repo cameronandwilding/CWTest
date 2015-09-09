@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function isPhantomJSRunning {
+function checkAndStartPhantomJS {
   if ! lsof -i:4445
   then
     echo Port 4445 is free
@@ -17,5 +17,5 @@ function runPhantomJS {
   phantomjs --webdriver=4445 &
 }
 
-isPhantomJSRunning
+checkAndStartPhantomJS
 
