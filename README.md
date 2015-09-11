@@ -55,3 +55,8 @@ Test Results
 ============
 
 The results of all tests will be stored in <LOCAL DRUPAL INSTALL>/cw_test/Results.
+
+
+Future ideas
+============
+1. Fork the repo to have a D7 and D8 versions.
