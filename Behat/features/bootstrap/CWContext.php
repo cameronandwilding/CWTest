@@ -929,6 +929,8 @@ JS;
   }
 
   /**
+   * @Given I get the HTML of the page
+   *
    * @return string
    */
   public function getHtml() {

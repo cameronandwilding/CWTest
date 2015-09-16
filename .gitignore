@@ -6,6 +6,7 @@
 Behat/cache
 Behat/vendor
 Behat/bin
+Behat/behat.local.yml
 
 # JMeter
 JMeter/jmeter.log
@@ -25,3 +26,4 @@ VisualDiff/*/composer
 VisualDiff/*/instaclick
 VisualDiff/*/symfony
 VisualDiff/*/autoload.php
+VisualDiff/behat.local.yml
