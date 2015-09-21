@@ -940,6 +940,20 @@ JS;
 
     return $this->html;
   }
+
+  /**
+   * Asserts that a given content type is editable.
+   *  - replaces the default DrupalContext minus the status code check.
+   *
+   * @Then I am able to edit a/an :type( content)
+   */
+  public function assertEditNodeOfType($type) {
+    $node = (object) array('type' => $type);
+    $saved = $this->nodeCreate($node);
+
+    // Set internal browser on the node edit page.
+    $this->getSession()->visit($this->locatePath('/node/' . $saved->nid . '/edit'));
+  }
 }
 
 /**
