@@ -1,7 +1,7 @@
 Feature: CW Feature
   In order to test any drupal site
   As a mix of users
-  I need to run some basic sanity tests scross the entire site
+  I need to run some basic sanity tests across the entire site
 
 
 ############################################################################################################
@@ -17,7 +17,6 @@ Feature: CW Feature
     Then the following login error messages are displayed:
       | ERROR MESSAGE               |
       | Sorry, unrecognized username or password. Have you forgotten your password? |
-
 
 ############################################################################################################
 #   ROLES & PERMISSIONS
