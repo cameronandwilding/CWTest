@@ -304,24 +304,32 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
   }
 
   /**
+   * @Given I assign an id to the nameless frame :frame and switch to it
+   * @Given I assign an id to the :number nameless frame :frame and switch to it
+   */
+  public function iAssignIDToANamelessFrame($number=0, $frame) {
+    $javascript = <<<JS
+        (function(){
+          var elem = document.getElementById('$frame');
+          var iframes = elem.getElementsByTagName('iframe');
+          var f = iframes['$number'];
+          f.id = '$frame';
+        })()
+JS;
+    $this->getSession()->executeScript($javascript);
+
+    // Select a frame.
+    $this->getSession()->switchToIFrame($frame);
+  }
+
+  /**
    * @Given I fill in :frame frame with :text
    * $parentFrame - the frame that was originally in focus.
    * $targetFrameID - the frame to be interacted with.
    * $text - the text to be entered into the iframe.
    */
   public function iFillInFrameWith($targetFrameID, $text, $modalID = NULL) {
-    $javascript = <<<JS
-        (function(){
-          var elem = document.getElementById('$targetFrameID');
-          var iframes = elem.getElementsByTagName('iframe');
-          var f = iframes[0];
-          f.id = '$targetFrameID';
-        })()
-JS;
-    $this->getSession()->executeScript($javascript);
-
-    // Select a frame.
-    $this->getSession()->switchToIFrame($targetFrameID);
+    $this->iAssignIDToANamelessFrame($targetFrameID);
 
     // Enter text into the frame.
     $this->getSession()
@@ -344,18 +352,7 @@ JS;
    * $targetFrameID - the frame to be interacted with.
    */
   public function iRetrieveValueFromIFrame($targetFrameID) {
-    $javascript = <<<JS
-        (function(){
-          var elem = document.getElementById('$targetFrameID');
-          var iframes = elem.getElementsByTagName('iframe');
-          var f = iframes[0];
-          f.id = '$targetFrameID';
-        })()
-JS;
-    $this->getSession()->executeScript($javascript);
-
-    // Select the frame.
-    $this->getSession()->switchToIFrame($targetFrameID);
+    $this->iAssignIDToANamelessFrame($targetFrameID);
 
     // Get inner html from the iframe.
     return $this->getSession()
@@ -378,7 +375,7 @@ JS;
     }
   }
 
-  /**
+    /**
    * @Given I fill in :field field with :value
    */
   public function iFillInFieldWith($field, $value) {
@@ -538,6 +535,10 @@ JS;
 
         case 'LABEL':
           $xpath = "//" . $identifier . "[text()[contains(.,'$field')]]";
+          break;
+
+        case 'LINK':
+          $xpath = "//a[text()[contains(.,'$field')]]";
           break;
 
         case 'BUTTON':
