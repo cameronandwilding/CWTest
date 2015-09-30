@@ -305,13 +305,14 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   /**
    * @Given I assign an id to the nameless frame :frame and switch to it
+   * @Given I assign an id to the :number nameless frame :frame and switch to it
    */
-  public function iAssignIDToANamelessFrame($frame) {
+  public function iAssignIDToANamelessFrame($number=0, $frame) {
     $javascript = <<<JS
         (function(){
           var elem = document.getElementById('$frame');
           var iframes = elem.getElementsByTagName('iframe');
-          var f = iframes[0];
+          var f = iframes['$number'];
           f.id = '$frame';
         })()
 JS;
