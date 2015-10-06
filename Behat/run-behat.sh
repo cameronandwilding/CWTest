@@ -8,7 +8,7 @@ PROFILE=$2
 
 ## Copy files to behat folder for execution
 cp ../../Behat_Test_Files/Project.feature features/
-cp -R ../../Behat_Test_Files/images .
+cp -Rn ../../Behat_Test_Files/images .
 
 ## Handle behat executing logic
 ## Extra profiles should be added after the last if

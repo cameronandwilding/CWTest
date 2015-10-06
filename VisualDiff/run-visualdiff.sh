@@ -6,7 +6,7 @@ sh ../Servers/start_selenium_server.sh
 
 #  Run VisualDiff tests
 printf "\nStarting the VisualDiff tests...\n"
-vendor/bin/behat -f html --out ../Results/VisualDiff/report.html
+vendor/bin/behat -f html --out ../Results/VisualDiff/report.html vendor/features/VisualDiff.feature
 
 #  Stop Selenium Server
 sh ../Servers/stop_selenium_server.sh

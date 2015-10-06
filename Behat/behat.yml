@@ -35,13 +35,13 @@ imports:
 chrome:
   extensions:
     Behat\MinkExtension:
-      #goutte: ~
+      goutte: ~
       browser_name: chrome
 
 firefox:
   extensions:
     Behat\MinkExtension:
-      #goutte: ~
+      goutte: ~
       browser_name: firefox
 
 phantomjs:
