@@ -6,9 +6,9 @@
 TAG=$1
 PROFILE=$2
 
-## Copy files to behat folder for execution
-cp ../../Behat_Test_Files/Project.feature features/
-cp -Rn ../../Behat_Test_Files/images .
+## Sync files to behat folder for execution
+rsync ../../Behat_Test_Files/Project.feature features/
+rsync -av --exclude-from=../../Behat_Test_Files/images/.gitkeep ../../Behat_Test_Files/images/ images
 
 ## Handle behat executing logic
 ## Extra profiles should be added after the last if
