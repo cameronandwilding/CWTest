@@ -3,13 +3,11 @@
 function checkAndStartSeleniumServer {
   if ! lsof -i:4444
   then
-    echo Port 4444 is free
-    printf "\nStarting selenium server...\n"
+    printf "Port 4444 is free - starting selenium server...\n"
     runSeleniumServer
     sleep 4;
   else
-    echo Port 4444 is in use
-    printf "\nSelenium server already running.\n"
+    printf "Port 4444 is in use - selenium server already running.\n"
   fi
 }
 

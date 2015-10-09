@@ -307,7 +307,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
    * @Given I assign an id to the nameless frame :frame and switch to it
    * @Given I assign an id to the :number nameless frame :frame and switch to it
    */
-  public function iAssignIDToANamelessFrame($number=0, $frame) {
+  public function iAssignIDToANamelessFrame($frame, $number=0) {
     $javascript = <<<JS
         (function(){
           var elem = document.getElementById('$frame');
@@ -380,7 +380,7 @@ JS;
    */
   public function iFillInFieldWith($field, $value) {
     $value = str_replace('<number>', $this->randomItems->number, $value);
-    $value = str_replace('<alpha_number>', $this->randomItems->alpha_number, $value);
+    $value = str_replace('<alpha_number>', $this->randomItems->alphaNumber, $value);
     $value = str_replace('<alpha>', $this->randomItems->alpha, $value);
     $value = str_replace('<datetime>', date(self::DATE_FORMAT_CONCISE), $value);
     $element = $this->getSession()->getPage()->findById($field);
