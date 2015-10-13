@@ -488,6 +488,35 @@ JS;
     }
   }
 
+
+  /**
+   * @Given I verify that value :value is not present in dropdown :dropdown
+   * This function will check that a value is not present in a dropdown
+   */
+  public function check($value, $dropdown) {
+    // Check the dropdown exists
+    $dropdown = $this->getSession()->getPage()->findField($dropdown);
+    if (NULL === $dropdown) {
+      throw new CWContextException("The element " . $dropdown . " does not exist");
+    }
+    else {
+      // Get an array of all the entries in the dropdown
+      $handler = $this->getSession()->getSelectorsHandler();
+      $optionElements = $dropdown->findAll('named', array(
+        'option',
+        $handler->selectorToXpath('css', 'option')
+      ));
+
+      //  Loop through the contents and ensure $value is not present
+      foreach ($optionElements as $entry) {
+        if (strtoupper($entry->getText()) == (strtoupper($value))) {
+          throw new CWContextException("The value '{$value}' is present in the dropdown when it should not be.");
+        }
+      }
+    }
+   }
+
+
   /**
    * @Given I click on the radiobutton with :label label
    */
@@ -558,6 +587,20 @@ JS;
       if ($nodes->length === 0) {
         throw new CWContextException("The field '$field' was not found");
       }
+    }
+  }
+
+  /**
+   * @Given I verify the field :field is not present
+   */
+  public function iVerifyTheFieldIsNotPresent($field) {
+    //  Get a DOM of the current page.
+    $dom = $this->createDOMOfPage();
+
+    //  Get all the assets matching the $field.
+    $assets = $this->getNodesMatchingXpath($dom, $field);
+    if ($assets->length >= 1 ) {
+      throw new CWContextException("This '{$field}' field was located when it should not have been.");
     }
   }
 
@@ -814,6 +857,7 @@ JS;
     }
   }
 
+
   /*******************************************************************************
    * End of ASSET functions.
    *******************************************************************************/
@@ -940,6 +984,7 @@ JS;
     }
 
     return $this->html;
+    echo $this->html;
   }
 
   /**
