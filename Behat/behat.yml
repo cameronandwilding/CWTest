@@ -12,17 +12,20 @@ default:
   extensions:
     Behat\MinkExtension:
       files_path: %paths.base%/images
+      goutte: ~
       selenium2:
         wd_host: "http://localhost:4444/wd/hub"
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: 'drupal'
       text:
-        log_out: "Log out"
+        log_out: "My account"
     emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
        name: html
        renderer: Twig
-       file_name: report
+       print_args: true
+       print_outp: true
+       loop_break: true
   formatters:
     junit:
       output_path: %paths.base%/../Results/Behat
@@ -35,13 +38,11 @@ imports:
 chrome:
   extensions:
     Behat\MinkExtension:
-      #goutte: ~
       browser_name: chrome
 
 firefox:
   extensions:
     Behat\MinkExtension:
-      #goutte: ~
       browser_name: firefox
 
 phantomjs:

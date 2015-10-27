@@ -1,7 +1,7 @@
 Feature: CW Feature
   In order to test any drupal site
   As a mix of users
-  I need to run some basic sanity tests scross the entire site
+  I need to run some basic sanity tests across the entire site
 
 
 ############################################################################################################
@@ -17,7 +17,6 @@ Feature: CW Feature
     Then the following login error messages are displayed:
       | ERROR MESSAGE               |
       | Sorry, unrecognized username or password. Have you forgotten your password? |
-
 
 ############################################################################################################
 #   ROLES & PERMISSIONS
@@ -37,28 +36,28 @@ Feature: CW Feature
 ###   ANONYMOUS USER
 ######################
 
-  @api @regression @smoke @roles @bm
-  Scenario: Verify Anonymous user page access
+  @api @regression @smoke @roles
+  Scenario: Verify Anonymous user page access to the homepage
     Given I am not logged in
     Then I check the HTTP response code is "200" for "/"
 
   @api @regression @smoke @roles
-  Scenario: Verify Anonymous user page access
+  Scenario: Verify Anonymous user page access to /user/login
     Given I am not logged in
     Then I check the HTTP response code is "200" for "/user/login"
 
   @api @regression @smoke @roles
-  Scenario: Verify Anonymous user page access
+  Scenario: Verify Anonymous user page access to /node/add
     Given I am not logged in
     Then I check the HTTP response code is "403" for "/node/add"
 
   @api @regression @smoke @roles
-  Scenario: Verify Anonymous user page access
+  Scenario: Verify Anonymous user page access to /admin
     Given I am not logged in
     Then I check the HTTP response code is "403" for "/admin"
 
   @api @regression @smoke @roles
-  Scenario: Verify Anonymous user page access
+  Scenario: Verify Anonymous user page access /user/logout
     Given I am not logged in
     Then I check the HTTP response code is "403" for "/user/logout"
 
@@ -68,27 +67,27 @@ Feature: CW Feature
 ######################
 
   @api @regression @smoke @roles
-  Scenario: Verify Admin user page access
+  Scenario: Verify Admin user page access /admin/content
     Given I am logged in as a user with the administrator role
     When I go to "/admin/content"
     Then I should see text matching "Content"
     And I should see text matching "Administration"
 
   @api @regression @smoke @roles
-  Scenario: Verify Admin user page access
+  Scenario: Verify Admin user page access /admin/people
     Given I am logged in as a user with the administrator role
     When I go to "/admin/people"
     Then I should see text matching "People"
     And I should see text matching "Administration"
 
   @api @regression @smoke @roles
-  Scenario: Verify Admin user page access
+  Scenario: Verify Admin user page access /node/add
     Given I am logged in as a user with the administrator role
     When I go to "/node/add"
     Then I should see text matching "Add content"
 
   @api @regression @smoke @roles
-  Scenario: Verify Admin user page access
+  Scenario: Verify Admin user page access /user/logout
     Given I am logged in as a user with the administrator role
     When I go to "/user/logout"
     And I go to "/user"

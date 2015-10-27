@@ -304,24 +304,32 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
   }
 
   /**
+   * @Given I assign an id to the nameless frame :frame and switch to it
+   * @Given I assign an id to the :number nameless frame :frame and switch to it
+   */
+  public function iAssignIDToANamelessFrame($frame, $number=0) {
+    $javascript = <<<JS
+        (function(){
+          var elem = document.getElementById('$frame');
+          var iframes = elem.getElementsByTagName('iframe');
+          var f = iframes['$number'];
+          f.id = '$frame';
+        })()
+JS;
+    $this->getSession()->executeScript($javascript);
+
+    // Select a frame.
+    $this->getSession()->switchToIFrame($frame);
+  }
+
+  /**
    * @Given I fill in :frame frame with :text
    * $parentFrame - the frame that was originally in focus.
    * $targetFrameID - the frame to be interacted with.
    * $text - the text to be entered into the iframe.
    */
   public function iFillInFrameWith($targetFrameID, $text, $modalID = NULL) {
-    $javascript = <<<JS
-        (function(){
-          var elem = document.getElementById('$targetFrameID');
-          var iframes = elem.getElementsByTagName('iframe');
-          var f = iframes[0];
-          f.id = '$targetFrameID';
-        })()
-JS;
-    $this->getSession()->executeScript($javascript);
-
-    // Select a frame.
-    $this->getSession()->switchToIFrame($targetFrameID);
+    $this->iAssignIDToANamelessFrame($targetFrameID);
 
     // Enter text into the frame.
     $this->getSession()
@@ -344,18 +352,7 @@ JS;
    * $targetFrameID - the frame to be interacted with.
    */
   public function iRetrieveValueFromIFrame($targetFrameID) {
-    $javascript = <<<JS
-        (function(){
-          var elem = document.getElementById('$targetFrameID');
-          var iframes = elem.getElementsByTagName('iframe');
-          var f = iframes[0];
-          f.id = '$targetFrameID';
-        })()
-JS;
-    $this->getSession()->executeScript($javascript);
-
-    // Select the frame.
-    $this->getSession()->switchToIFrame($targetFrameID);
+    $this->iAssignIDToANamelessFrame($targetFrameID);
 
     // Get inner html from the iframe.
     return $this->getSession()
@@ -378,12 +375,12 @@ JS;
     }
   }
 
-  /**
+    /**
    * @Given I fill in :field field with :value
    */
   public function iFillInFieldWith($field, $value) {
     $value = str_replace('<number>', $this->randomItems->number, $value);
-    $value = str_replace('<alpha_number>', $this->randomItems->alpha_number, $value);
+    $value = str_replace('<alpha_number>', $this->randomItems->alphaNumber, $value);
     $value = str_replace('<alpha>', $this->randomItems->alpha, $value);
     $value = str_replace('<datetime>', date(self::DATE_FORMAT_CONCISE), $value);
     $element = $this->getSession()->getPage()->findById($field);
@@ -491,6 +488,35 @@ JS;
     }
   }
 
+
+  /**
+   * @Given I verify that value :value is not present in dropdown :dropdown
+   * This function will check that a value is not present in a dropdown
+   */
+  public function check($value, $dropdown) {
+    // Check the dropdown exists
+    $dropdown = $this->getSession()->getPage()->findField($dropdown);
+    if (NULL === $dropdown) {
+      throw new CWContextException("The element " . $dropdown . " does not exist");
+    }
+    else {
+      // Get an array of all the entries in the dropdown
+      $handler = $this->getSession()->getSelectorsHandler();
+      $optionElements = $dropdown->findAll('named', array(
+        'option',
+        $handler->selectorToXpath('css', 'option')
+      ));
+
+      //  Loop through the contents and ensure $value is not present
+      foreach ($optionElements as $entry) {
+        if (strtoupper($entry->getText()) == (strtoupper($value))) {
+          throw new CWContextException("The value '{$value}' is present in the dropdown when it should not be.");
+        }
+      }
+    }
+   }
+
+
   /**
    * @Given I click on the radiobutton with :label label
    */
@@ -540,6 +566,10 @@ JS;
           $xpath = "//" . $identifier . "[text()[contains(.,'$field')]]";
           break;
 
+        case 'LINK':
+          $xpath = "//a[text()[contains(.,'$field')]]";
+          break;
+
         case 'BUTTON':
           $xpath = "//input[@type='submit'][@value='$field']";
           break;
@@ -557,6 +587,20 @@ JS;
       if ($nodes->length === 0) {
         throw new CWContextException("The field '$field' was not found");
       }
+    }
+  }
+
+  /**
+   * @Given I verify the field :field is not present
+   */
+  public function iVerifyTheFieldIsNotPresent($field) {
+    //  Get a DOM of the current page.
+    $dom = $this->createDOMOfPage();
+
+    //  Get all the assets matching the $field.
+    $assets = $this->getNodesMatchingXpath($dom, $field);
+    if ($assets->length >= 1 ) {
+      throw new CWContextException("This '{$field}' field was located when it should not have been.");
     }
   }
 
@@ -813,6 +857,7 @@ JS;
     }
   }
 
+
   /*******************************************************************************
    * End of ASSET functions.
    *******************************************************************************/
@@ -939,6 +984,21 @@ JS;
     }
 
     return $this->html;
+    echo $this->html;
+  }
+
+  /**
+   * Asserts that a given content type is editable.
+   *  - replaces the default DrupalContext minus the status code check.
+   *
+   * @Then I am able to edit a/an :type( content)
+   */
+  public function assertEditNodeOfType($type) {
+    $node = (object) array('type' => $type);
+    $saved = $this->nodeCreate($node);
+
+    // Set internal browser on the node edit page.
+    $this->getSession()->visit($this->locatePath('/node/' . $saved->nid . '/edit'));
   }
 }
 
