@@ -6,12 +6,19 @@
 TAG=$1
 PROFILE=$2
 
+if [ -z $PROFILE ] || [ -z $TAG ]
+then
+   echo "ERROR: Expected Tag followed by Profile"
+   exit 1
+fi
+
 ## Copy files to behat folder for execution
 cp ../../Behat_Test_Files/Project.feature features/
 cp -R ../../Behat_Test_Files/images .
 
 ## Handle behat executing logic
 ## Extra profiles should be added after the last if
+## Add profile to teardown where necessary
 
 #  Selenium Server
 if [ $PROFILE = "firefox" ] || [ $PROFILE = "chrome"  ]
@@ -33,7 +40,13 @@ rm features/Project.feature
 rm -R images/
 
 #  Stop PhantomJS webdriver
-sh ../Servers/stop_phantomjs_webdriver.sh
+if [ $PROFILE = "phantomjs" ]
+then
+   sh ../Servers/stop_phantomjs_webdriver.sh
+fi
 
 #  Stop Selenium server
-sh ../Servers/stop_selenium_server.sh
+if [ $PROFILE = "firefox" ] || [ $PROFILE = "chrome"  ]
+then
+   sh ../Servers/stop_selenium_server.sh
+fi
