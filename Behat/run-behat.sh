@@ -6,6 +6,7 @@
 TAG=$1
 PROFILE=$2
 
+## Shell script must always be passed a tag and profile
 if [ -z $PROFILE ] || [ -z $TAG ]
 then
    echo "ERROR: Expected Tag followed by Profile"
