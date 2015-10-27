@@ -12,9 +12,9 @@ then
    exit 1
 fi
 
-## Copy files to behat folder for execution
-cp ../../Behat_Test_Files/Project.feature features/
-cp -R ../../Behat_Test_Files/images .
+## Sync files to behat folder for execution
+rsync ../../Behat_Test_Files/Project.feature features/
+rsync -av --exclude-from=../../Behat_Test_Files/images/.gitkeep ../../Behat_Test_Files/images/ images
 
 ## Handle behat executing logic
 ## Extra profiles should be added after the last if
