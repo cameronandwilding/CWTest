@@ -77,10 +77,10 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
   public $repoElements;
 
   /**
-   * Array of page objects
+   * Array of page elements
    * @var array
    */
-  public $aPageObjects = array();
+  public $PageElements = array();
 
   /*******************************************************************************
    * Start of INITIALISATION functions.
@@ -450,14 +450,14 @@ JS;
    */
   public function iSelectARandomEntryFromDropdown($dropdown) {
     // Check the dropdown exists
-    $eDropdown = $this->getSession()->getPage()->findField($dropdown);
-    if (NULL === $eDropdown) {
+    $dropdownElement = $this->getSession()->getPage()->findField($dropdown);
+    if (NULL === $dropdownElement) {
       throw new CWContextException("The element " . $dropdown . " does not exist");
     }
     else {
       // Get an array of all the entries in the dropdown
       $handler = $this->getSession()->getSelectorsHandler();
-      $optionElements = $eDropdown->findAll('named', array(
+      $optionElements = $dropdownElement->findAll('named', array(
         'option',
         $handler->selectorToXpath('css', 'option')
       ));
@@ -487,8 +487,8 @@ JS;
         }
       }
 
-      // create xpath string
-      $strXpath = "//*[@id='".$dropdown."']";
+      // Create xpath string.
+      $strXpath = "//*[@id='" . $dropdown . "']";
 
       // Select that numbered entry from the dropdown.
       $this->getSession()->getDriver()->selectOption( $strXpath , $value);
@@ -871,49 +871,50 @@ JS;
 
   /**
    * @Given I build repository from :page
+   *
+   * Visits a page and creates a file in features/bootstrap folder.
    */
-
   public function getObjects($page) {
-    //  Go to page
+    //  Go to page.
     $this->visitPath($page);
 
     //  Get a DOM of the current page.
     $dom = $this->createDOMOfPage();
 
-    //  Extract all buttons
+    //  Extract all buttons.
     $TypeXpath = "//input[@type='submit']";
     $objectType = "BUTTON";
     $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all Text fields
+    //  Extract all Text fields.
     $TypeXpath = "//input[@type='text']";
     $objectType = "TEXTFIELD";
     $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all password fields
+    //  Extract all password fields.
     $TypeXpath = "//input[@type='password']";
     $objectType = "PASSWORD";
     $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all Checkboxes
+    //  Extract all Checkboxes.
     $TypeXpath = "//input[@type='checkbox']";
     $objectType = "CHECKBOX";
     $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all dropdown
+    //  Extract all dropdown.
     $TypeXpath = "//select";
     $objectType = "DROPDOWN";
     $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Add objects to a file
+    //  Add objects to a file.
     $file = "Objects.txt";
 
-    //  Specify file output path
+    //  Specify file output path.
     $filePath = $this->parameters['repository'];
 
-    //  Prepare a string of the objects
+    //  Prepare a string of the objects.
     $strObjects = '';
-    foreach ($this->aPageObjects as $object) {
+    foreach ($this->PageElements as $object) {
       $strObjects .= "\n";
       foreach ($object as $k => $v) {
         $strObjects .= "$k=$v";
@@ -922,55 +923,51 @@ JS;
     file_put_contents($filePath . '/' . $file, $strObjects);
   }
 
-  public function buildObjects($dom, $xpathofObject, $objectType)
-  {
+  /**
+   * This function is only called by getObjects(). When passed a dom, xpath and readable name;
+   * It will store any matching attributes into a global array.
+   */
+  public function buildObjects($dom, $xpathofObject, $objectType) {
     //  Save the objects to an array, and keep count of all elements.
-    $aBuffer = array();
+    $Buffer = array();
     $countObjects = 0;
 
-    // Create an array of xpathable objects
+    // Create an array of xpathable objects.
     $arrNodes = $this->getNodesMatchingXpath($dom, $xpathofObject);
 
-    // Name the object type within the array
-    $aBuffer[$countObjects]['OBJECT TYPE'] = $objectType;
+    // Name the object type within the array.
+    $Buffer[$countObjects]['OBJECT TYPE'] = $objectType;
 
-    // Perform loop to query and store any matches
+    // Perform loop to query and store any matches.
     foreach ($arrNodes as $node) {
       $countObjects++;
       $xpathDOM = new DomXPath($dom);
 
-      // if id of object exists, save it
-      if (!empty($xpathDOM->query("@id", $node)
-        ->item(0)->nodeValue)
-      ) {
-        $aBuffer[$countObjects]['id'] = $xpathDOM->query("@id", $node)
-          ->item(0)->nodeValue;
+      // If id of object exists, save it.
+      $id = $xpathDOM->query("@id", $node);
+      if (!empty($id->item(0)->nodeValue)) {
+        $Buffer[] = ['id' => $xpathDOM->query("@id", $node)->item(0)->nodeValue];
         $countObjects++;
       }
 
-      // if name of object exists, save it
-      if (!empty($xpathDOM->query("@name", $node)
-        ->item(0)->nodeValue)
-      ) {
-        $aBuffer[$countObjects]['name'] = $xpathDOM->query("@name", $node)
-          ->item(0)->nodeValue;
+      // If name of object exists, save it.
+      $name = $xpathDOM->query("@name", $node);
+      if (!empty($name->item(0)->nodeValue)) {
+        $Buffer[] = ['name' => $xpathDOM->query("@name", $node)->item(0)->nodeValue];
         $countObjects++;
       }
 
-      // if value of object exists, save it
-      if (!empty($xpathDOM->query("@value", $node)
-        ->item(0)->nodeValue)
-      ) {
-        $aBuffer[$countObjects]['value'] = $xpathDOM->query("@value", $node)
-          ->item(0)->nodeValue;
+      // If value of object exists, save it.
+      $value = $xpathDOM->query("@value", $node);
+      if (!empty($value->item(0)->nodeValue)) {
+        $Buffer[] = ['value' => $xpathDOM->query("@value", $node)->item(0)->nodeValue];
         $countObjects++;
       }
     }
 
-    // append buffer array to the global array
-    $this->aPageObjects = array_merge( $this->aPageObjects, $aBuffer);
+    // Append buffer array to the global array.
+    $this->PageElements = array_merge( $this->PageElements, $Buffer);
   }
-
 
   /**
    * @Given I get the HTML of the page
