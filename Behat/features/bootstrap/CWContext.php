@@ -76,6 +76,12 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
    */
   public $repoElements;
 
+  /**
+   * Array of page objects
+   * @var array
+   */
+  public $aPageObjects = array();
+
   /*******************************************************************************
    * Start of INITIALISATION functions.
    *******************************************************************************/
@@ -108,10 +114,10 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
   }
 
   /**
-   * @Given maximise the browser window
+   * @Given I maximise the browser window
    */
   public function maximiseTheBrowserWindow() {
-    $this->getSession()->getDriver()->resizeWindow(self::WIDTH, self::HEIGHT);
+    $this->getSession()->maximizeWindow();
   }
 
   /**
@@ -444,18 +450,17 @@ JS;
    */
   public function iSelectARandomEntryFromDropdown($dropdown) {
     // Check the dropdown exists
-    $dropdown = $this->getSession()->getPage()->findField($dropdown);
-    if (NULL === $dropdown) {
+    $eDropdown = $this->getSession()->getPage()->findField($dropdown);
+    if (NULL === $eDropdown) {
       throw new CWContextException("The element " . $dropdown . " does not exist");
     }
     else {
       // Get an array of all the entries in the dropdown
       $handler = $this->getSession()->getSelectorsHandler();
-      $optionElements = $dropdown->findAll('named', array(
+      $optionElements = $eDropdown->findAll('named', array(
         'option',
         $handler->selectorToXpath('css', 'option')
       ));
-
       // Check how many entries are in the dropdown
       $countOfOptions = count($optionElements);
 
@@ -481,10 +486,12 @@ JS;
             break;
         }
       }
+
+      // create xpath string
+      $strXpath = "//*[@id='".$dropdown."']";
+
       // Select that numbered entry from the dropdown.
-      $this->getSession()
-        ->getDriver()
-        ->selectOption('//*[@id="' . $dropdown . '"]', $value);
+      $this->getSession()->getDriver()->selectOption( $strXpath , $value);
     }
   }
 
@@ -861,99 +868,42 @@ JS;
   /*******************************************************************************
    * End of ASSET functions.
    *******************************************************************************/
-  /**
-   * @Given screen scrape :page
-   */
-  public function screenScrape($page) {
 
+  /**
+   * @Given I build repository from :page
+   */
+
+  public function getObjects($page) {
     //  Go to page
     $this->visitPath($page);
 
     //  Get a DOM of the current page.
     $dom = $this->createDOMOfPage();
 
-    //  Save the objects to an array, and keep count of all elements.
-    $arrObjects = array();
-    $countObjects = 0;
-
     //  Extract all buttons
-    $buttonXpath = "//input[@type='submit']";
-    $arrNodes = $this->getNodesMatchingXpath($dom, $buttonXpath);
-    $arrObjects[$countObjects]['OBJECT TYPE'] = 'BUTTON';
-    $countObjects++;
-    foreach ($arrNodes as $node) {
-      $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['value'] = $xpathDOM->query("@value", $node)
-        ->item(0)->nodeValue;
-      $countObjects++;
-    }
+    $TypeXpath = "//input[@type='submit']";
+    $objectType = "BUTTON";
+    $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all text fields
-    $textXpath = "//input[@type='text']";
-    $arrNodes = $this->getNodesMatchingXpath($dom, $textXpath);
-    $arrObjects[$countObjects]['OBJECT TYPE'] = 'TEXT';
-    $countObjects++;
-    foreach ($arrNodes as $node) {
-      $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['value'] = $xpathDOM->query("@value", $node)
-        ->item(0)->nodeValue;
-      $countObjects++;
-    }
+    //  Extract all Text fields
+    $TypeXpath = "//input[@type='text']";
+    $objectType = "TEXTFIELD";
+    $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all checkboxes
-    $checkboxXpath = "//input[@type='checkbox']";
-    $arrNodes = $this->getNodesMatchingXpath($dom, $checkboxXpath);
-    $arrObjects[$countObjects]['OBJECT TYPE'] = 'CHECKBOX';
-    $countObjects++;
-    foreach ($arrNodes as $node) {
-      $countObjects++;
-      $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['value'] = $xpathDOM->query("@value", $node)
-        ->item(0)->nodeValue;
-      $countObjects++;
-    }
+    //  Extract all password fields
+    $TypeXpath = "//input[@type='password']";
+    $objectType = "PASSWORD";
+    $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all dropdowns
-    $dropdownXpath = "//select";
-    $arrNodes = $this->getNodesMatchingXpath($dom, $dropdownXpath);
-    $arrObjects[$countObjects]['OBJECT TYPE'] = 'DROPDOWN';
-    $countObjects++;
-    foreach ($arrNodes as $node) {
-      $countObjects++;
-      $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
-        ->item(0)->nodeValue;
-      $countObjects++;
-    }
+    //  Extract all Checkboxes
+    $TypeXpath = "//input[@type='checkbox']";
+    $objectType = "CHECKBOX";
+    $this->buildObjects($dom, $TypeXpath, $objectType);
 
-    //  Extract all textareas
-    $textareaXpath = "//textarea";
-    $arrNodes = $this->getNodesMatchingXpath($dom, $textareaXpath);
-    $arrObjects[$countObjects]['OBJECT TYPE'] = 'TEXTAREA';
-    $countObjects++;
-    foreach ($arrNodes as $node) {
-      $countObjects++;
-      $xpathDOM = new DomXPath($dom);
-      $arrObjects[$countObjects]['id'] = $xpathDOM->query("@id", $node)
-        ->item(0)->nodeValue;
-      $arrObjects[$countObjects]['name'] = $xpathDOM->query("@name", $node)
-        ->item(0)->nodeValue;
-      $countObjects++;
-    }
+    //  Extract all dropdown
+    $TypeXpath = "//select";
+    $objectType = "DROPDOWN";
+    $this->buildObjects($dom, $TypeXpath, $objectType);
 
     //  Add objects to a file
     $file = "Objects.txt";
@@ -963,15 +913,64 @@ JS;
 
     //  Prepare a string of the objects
     $strObjects = '';
-    foreach ($arrObjects as $object) {
+    foreach ($this->aPageObjects as $object) {
       $strObjects .= "\n";
       foreach ($object as $k => $v) {
-        $strObjects .= "$k=$v  ";
+        $strObjects .= "$k=$v";
+      }
+    }
+    file_put_contents($filePath . '/' . $file, $strObjects);
+  }
+
+  public function buildObjects($dom, $xpathofObject, $objectType)
+  {
+    //  Save the objects to an array, and keep count of all elements.
+    $aBuffer = array();
+    $countObjects = 0;
+
+    // Create an array of xpathable objects
+    $arrNodes = $this->getNodesMatchingXpath($dom, $xpathofObject);
+
+    // Name the object type within the array
+    $aBuffer[$countObjects]['OBJECT TYPE'] = $objectType;
+
+    // Perform loop to query and store any matches
+    foreach ($arrNodes as $node) {
+      $countObjects++;
+      $xpathDOM = new DomXPath($dom);
+
+      // if id of object exists, save it
+      if (!empty($xpathDOM->query("@id", $node)
+        ->item(0)->nodeValue)
+      ) {
+        $aBuffer[$countObjects]['id'] = $xpathDOM->query("@id", $node)
+          ->item(0)->nodeValue;
+        $countObjects++;
+      }
+
+      // if name of object exists, save it
+      if (!empty($xpathDOM->query("@name", $node)
+        ->item(0)->nodeValue)
+      ) {
+        $aBuffer[$countObjects]['name'] = $xpathDOM->query("@name", $node)
+          ->item(0)->nodeValue;
+        $countObjects++;
+      }
+
+      // if value of object exists, save it
+      if (!empty($xpathDOM->query("@value", $node)
+        ->item(0)->nodeValue)
+      ) {
+        $aBuffer[$countObjects]['value'] = $xpathDOM->query("@value", $node)
+          ->item(0)->nodeValue;
+        $countObjects++;
       }
     }
 
-    file_put_contents($filePath . '/' . $file, $strObjects);
+    // append buffer array to the global array
+    $this->aPageObjects = array_merge( $this->aPageObjects, $aBuffer);
   }
+
 
   /**
    * @Given I get the HTML of the page
