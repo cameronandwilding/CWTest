@@ -882,11 +882,11 @@ JS;
 
     // Create array of xpath => name for repository building.
     $toBuild = [
-      ["//input[@type='submit']"   , 'BUTTON'],
-      ["//input[@type='text']"     , 'TEXTFIELD'],
+      ["//input[@type='submit']" , 'BUTTON'],
+      ["//input[@type='text']"  , 'TEXTFIELD'],
       ["//input[@type='password']" , 'PASSWORD'],
       ["//input[@type='checkbox']" , 'CHECKBOX'],
-      ['//select'                  , 'DROPDOWN']];
+      ['//select' , 'DROPDOWN']];
 
     // Run array through buildObjects() function.
     foreach ($toBuild as $toBuildRecord) {
@@ -911,49 +911,49 @@ JS;
   }
 
   /**
-   * This function is only called by getObjects(). When passed a dom, xpath and readable name;
-   * It will store any matching attributes into a global array.
+   * When passed a dom, xpath and readable name; it will store any matching attributes into a global array.
+   * @param string $dom
+   *  DOM of page.
+   * @param string $xpathofObject
+   *  Xpath to the object.
+   * @param string $objectType
+   *  Name of the object stored.
    */
-  public function buildObjects($dom, $xpathofObject, $objectType) {
+  private function buildObjects($dom, $xpathofObject, $objectType) {
     //  Save the objects to an array, and keep count of all elements.
-    $Buffer = array();
-    $countObjects = 0;
+    $buffer = array();
 
     // Create an array of xpathable objects.
     $arrNodes = $this->getNodesMatchingXpath($dom, $xpathofObject);
 
     // Name the object type within the array.
-    $Buffer[$countObjects]['OBJECT TYPE'] = $objectType;
+    $buffer[] = ['OBJECT TYPE' => $objectType];
 
     // Perform loop to query and store any matches.
     foreach ($arrNodes as $node) {
-      $countObjects++;
       $xpathDOM = new DomXPath($dom);
 
       // If id of object exists, save it.
       $id = $xpathDOM->query("@id", $node);
       if (!empty($id->item(0)->nodeValue)) {
-        $Buffer[] = ['id' => $xpathDOM->query("@id", $node)->item(0)->nodeValue];
-        $countObjects++;
+        $buffer[] = ['id' => $xpathDOM->query("@id", $node)->item(0)->nodeValue];
       }
 
       // If name of object exists, save it.
       $name = $xpathDOM->query("@name", $node);
       if (!empty($name->item(0)->nodeValue)) {
-        $Buffer[] = ['name' => $xpathDOM->query("@name", $node)->item(0)->nodeValue];
-        $countObjects++;
+        $buffer[] = ['name' => $xpathDOM->query("@name", $node)->item(0)->nodeValue];
       }
 
       // If value of object exists, save it.
       $value = $xpathDOM->query("@value", $node);
       if (!empty($value->item(0)->nodeValue)) {
-        $Buffer[] = ['value' => $xpathDOM->query("@value", $node)->item(0)->nodeValue];
-        $countObjects++;
+        $buffer[] = ['value' => $xpathDOM->query("@value", $node)->item(0)->nodeValue];
       }
     }
 
     // Append buffer array to the global array.
-    $this->pageElements = array_merge( $this->pageElements, $Buffer);
+    $this->pageElements = array_merge( $this->pageElements, $buffer);
   }
 
   /**
