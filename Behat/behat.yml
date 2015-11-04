@@ -20,17 +20,17 @@ default:
       api_driver: 'drupal'
       text:
         log_out: "My account"
-    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
-       name: html
-       renderer: Twig
-       print_args: true
-       print_outp: true
-       loop_break: true
-  formatters:
-    junit:
-      output_path: %paths.base%/../Results/Behat
-    html:
-      output_path: %paths.base%/../Results/Behat
+#    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+#       name: html
+#       renderer: Twig
+#       print_args: true
+#       print_outp: true
+#       loop_break: true
+#  formatters:
+#    junit:
+#      output_path: %paths.base%/../Results/Behat
+#    html:
+#      output_path: %paths.base%/../Results/Behat
 
 imports:
   - behat.local.yml

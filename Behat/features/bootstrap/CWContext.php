@@ -881,30 +881,18 @@ JS;
     //  Get a DOM of the current page.
     $dom = $this->createDOMOfPage();
 
-    //  Extract all buttons.
-    $TypeXpath = "//input[@type='submit']";
-    $objectType = "BUTTON";
-    $this->buildObjects($dom, $TypeXpath, $objectType);
+    // Create array of xpath => name for repository building.
+    $toBuild = [
+      ["//input[@type='submit']"   , 'BUTTON'],
+      ["//input[@type='text']"     , 'TEXTFIELD'],
+      ["//input[@type='password']" , 'PASSWORD'],
+      ["//input[@type='checkbox']" , 'CHECKBOX'],
+      ['//select'                  , 'DROPDOWN']];
 
-    //  Extract all Text fields.
-    $TypeXpath = "//input[@type='text']";
-    $objectType = "TEXTFIELD";
-    $this->buildObjects($dom, $TypeXpath, $objectType);
-
-    //  Extract all password fields.
-    $TypeXpath = "//input[@type='password']";
-    $objectType = "PASSWORD";
-    $this->buildObjects($dom, $TypeXpath, $objectType);
-
-    //  Extract all Checkboxes.
-    $TypeXpath = "//input[@type='checkbox']";
-    $objectType = "CHECKBOX";
-    $this->buildObjects($dom, $TypeXpath, $objectType);
-
-    //  Extract all dropdown.
-    $TypeXpath = "//select";
-    $objectType = "DROPDOWN";
-    $this->buildObjects($dom, $TypeXpath, $objectType);
+    // Run array through buildObjects() function.
+    foreach ($toBuild as $toBuildRecord) {
+    $this->buildObjects($dom, $toBuildRecord[0], $toBuildRecord[1]);
+    }
 
     //  Add objects to a file.
     $file = "Objects.txt";
