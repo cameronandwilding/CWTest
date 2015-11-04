@@ -80,7 +80,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
    * Array of page elements
    * @var array
    */
-  public $PageElements = array();
+  public $pageElements = array();
 
   /*******************************************************************************
    * Start of INITIALISATION functions.
@@ -864,7 +864,6 @@ JS;
     }
   }
 
-
   /*******************************************************************************
    * End of ASSET functions.
    *******************************************************************************/
@@ -902,7 +901,7 @@ JS;
 
     //  Prepare a string of the objects.
     $strObjects = '';
-    foreach ($this->PageElements as $object) {
+    foreach ($this->pageElements as $object) {
       $strObjects .= "\n";
       foreach ($object as $k => $v) {
         $strObjects .= "$k=$v";
@@ -954,7 +953,7 @@ JS;
     }
 
     // Append buffer array to the global array.
-    $this->PageElements = array_merge( $this->PageElements, $Buffer);
+    $this->pageElements = array_merge( $this->pageElements, $Buffer);
   }
 
   /**
