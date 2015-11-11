@@ -890,7 +890,7 @@ JS;
 
     // Run array through buildObjects() function.
     foreach ($toBuild as $toBuildRecord) {
-    $this->buildObjects($dom, $toBuildRecord[0], $toBuildRecord[1]);
+      $this->buildObjects($dom, $toBuildRecord[0], $toBuildRecord[1]);
     }
 
     //  Add objects to a file.
@@ -967,7 +967,6 @@ JS;
     }
 
     return $this->html;
-    echo $this->html;
   }
 
   /**
@@ -977,7 +976,7 @@ JS;
    * @Then I am able to edit a/an :type( content)
    */
   public function assertEditNodeOfType($type) {
-    $node = (object) array('type' => $type);
+    $node = (object) array('title' => 'Test Title', 'type' => $type);
     $saved = $this->nodeCreate($node);
 
     // Set internal browser on the node edit page.
