@@ -30,7 +30,7 @@ Feature: CW Feature
   Scenario: Verify all user types
     Given users:
       | name       | mail            | roles         |
-      | Admin User | admin@behat.com | administrator |
+      | Admin User | admin@behat.com | admin |
 
 ######################
 ###   ANONYMOUS USER
@@ -68,27 +68,27 @@ Feature: CW Feature
 
   @api @regression @smoke @roles
   Scenario: Verify Admin user page access /admin/content
-    Given I am logged in as a user with the administrator role
+    Given I am logged in as a user with the admin role
     When I go to "/admin/content"
     Then I should see text matching "Content"
     And I should see text matching "Administration"
 
   @api @regression @smoke @roles
   Scenario: Verify Admin user page access /admin/people
-    Given I am logged in as a user with the administrator role
+    Given I am logged in as a user with the admin role
     When I go to "/admin/people"
     Then I should see text matching "People"
     And I should see text matching "Administration"
 
   @api @regression @smoke @roles
   Scenario: Verify Admin user page access /node/add
-    Given I am logged in as a user with the administrator role
+    Given I am logged in as a user with the admin role
     When I go to "/node/add"
     Then I should see text matching "Add content"
 
   @api @regression @smoke @roles
   Scenario: Verify Admin user page access /user/logout
-    Given I am logged in as a user with the administrator role
+    Given I am logged in as a user with the admin role
     When I go to "/user/logout"
     And I go to "/user"
     Then I should see text matching "Log in"
