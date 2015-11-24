@@ -16,6 +16,7 @@ do
   rm -rf $dir/.htaccess
 done
 
+
 #  Generate new composer autoload files.
 cd Behat
 composer dump-autoload

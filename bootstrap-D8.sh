@@ -16,7 +16,7 @@ do
   rm -rf $dir/.htaccess
 done
 
-#   Remove the guzzlehttp/promises and guzzlehttp/psr folders (Drupal 8 only)
+#   Remove the guzzlehttp/promises and guzzlehttp/psr folders ( Drupal 8 only )
 rm -rf Behat/vendor/guzzlehttp/promises
 rm -rf Behat/vendor/guzzlehttp/psr7
 
