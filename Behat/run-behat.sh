@@ -29,7 +29,7 @@ mv ../Results/Behat/*.html ../Results/Behat/History
 if [ $PROFILE = "firefox" ] || [ $PROFILE = "chrome"  ]
 then
    sh ../Servers/start_selenium_server.sh;
-   bin/behat --tags=@$TAG -p $PROFILE --format progress
+   bin/behat --tags=@$TAG -p $PROFILE -f junit -f html -f pretty
 fi
 
 #  PhantomJS
