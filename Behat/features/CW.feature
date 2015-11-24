@@ -36,12 +36,7 @@ Feature: CW Feature
 ###   ANONYMOUS USER
 ######################
 
-  @api @regression @smoke @roles
-  Scenario: Verify Anonymous user page access to the homepage
-    Given I am not logged in
-    Then I check the HTTP response code is "200" for "/"
-
-  @api @regression @smoke @roles
+git f  @api @regression @smoke @roles
   Scenario: Verify Anonymous user page access to /user/login
     Given I am not logged in
     Then I check the HTTP response code is "200" for "/user/login"
