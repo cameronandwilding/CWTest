@@ -18,6 +18,9 @@ rsync ../../Behat_Test_Files/*.feature features/
 rsync ../../Behat_Test_Files/*.php features/bootstrap
 rsync -av --exclude-from=../../Behat_Test_Files/images/.gitkeep ../../Behat_Test_Files/images/ images
 
+## Move previous result files to a History folder
+mv ../Results/Behat/*.html ../Results/Behat/History
+
 ## Handle behat executing logic
 ## Extra profiles should be added after the last if
 ## Add profile to teardown where necessary
