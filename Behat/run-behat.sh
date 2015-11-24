@@ -14,7 +14,8 @@ then
 fi
 
 ## Sync files to behat folder for execution
-rsync ../../Behat_Test_Files/Project.feature features/
+rsync ../../Behat_Test_Files/*.feature features/
+rsync ../../Behat_Test_Files/*.php features/bootstrap
 rsync -av --exclude-from=../../Behat_Test_Files/images/.gitkeep ../../Behat_Test_Files/images/ images
 
 ## Handle behat executing logic
