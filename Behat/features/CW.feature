@@ -36,7 +36,7 @@ Feature: CW Feature
 ###   ANONYMOUS USER
 ######################
 
-git f  @api @regression @smoke @roles
+  @api @regression @smoke @roles
   Scenario: Verify Anonymous user page access to /user/login
     Given I am not logged in
     Then I check the HTTP response code is "200" for "/user/login"
