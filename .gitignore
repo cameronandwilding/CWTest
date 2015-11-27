@@ -9,6 +9,8 @@ Behat/bin
 Behat/behat.local.yml
 Behat/.htaccess
 Behat/features/Project.feature
+Behat/features/General.feature
+Behat/features/bootstrap/ProjectContext.php
 
 # JMeter
 JMeter/jmeter.log
