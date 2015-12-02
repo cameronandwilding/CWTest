@@ -6,7 +6,7 @@
 TAG=$1
 PROFILE=$2
 NAME=$3
-echo $NAME
+
 ## Shell script must always be passed a tag and profile
 if [ -z $PROFILE ] || [ -z $TAG ]
 then
