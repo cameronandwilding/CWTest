@@ -16,6 +16,7 @@ fi
 ## Sync files to behat folder for execution
 rsync ../../Behat_Test_Files/*.feature features/
 rsync ../../Behat_Test_Files/*.php features/bootstrap
+rsync ../../Behat_Test_Files/*.ini features/bootstrap
 rsync -av --exclude-from=../../Behat_Test_Files/images/.gitkeep ../../Behat_Test_Files/images/ images
 
 ## Move previous result files to a History folder
