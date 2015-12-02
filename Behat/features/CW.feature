@@ -8,15 +8,7 @@ Feature: CW Feature
 #   LOGIN
 ############################################################################################################
 
-  @api @regression @login
-  Scenario: Login with invalid username and password
-    Given I am on "/user"
-    And I fill in "name" with "name"
-    And I fill in "pass" with "password"
-    When I press "Log in"
-    Then the following login error messages are displayed:
-      | ERROR MESSAGE               |
-      | Sorry, unrecognized username or password. Have you forgotten your password? |
+
 
 ############################################################################################################
 #   ROLES & PERMISSIONS
