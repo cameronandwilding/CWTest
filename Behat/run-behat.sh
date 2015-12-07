@@ -7,6 +7,13 @@ TAG=$1
 PROFILE=$2
 NAME=$3
 
+## Help option
+if [ "$1" == "-h" ]; then
+  echo "To execute all tests: sh run-behat.sh regression firefox"
+  echo "To execute a specific named test: sh run-behat.sh regression firefox \"name_of_test\""
+  exit 0
+fi
+
 ## Shell script must always be passed a tag and profile
 if [ -z $PROFILE ] || [ -z $TAG ]
 then
