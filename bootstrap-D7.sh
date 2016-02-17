@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #  Get Selenium Server.
-wget http://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar -O Servers/selenium.jar
+wget https://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.52.0.jar -O Servers/selenium.jar
 
 #  Install the following via their composer.json:
 #  - Behat
