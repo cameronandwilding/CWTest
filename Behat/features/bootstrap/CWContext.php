@@ -142,30 +142,26 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
    * Take screenshot when step fails.
    */
   public function takeScreenshotAfterFailedStep(AfterStepScope $scope) {
-    if (self::ERROR_CODE === $scope->getTestResult()->getResultCode()) {
-      $driver = $this->getSession()->getDriver();
+    if (self::ERROR_CODE !== $scope->getTestResult()->getResultCode()) {
+      return;
+    }
 
-      //  Get the text of the failed step.
-      $failed_test_step = $scope->getStep()->getText();
+    // Remove quotes from the test step name.
+    $failed_test_step = preg_replace('/[^a-zA-Z0-9\-]+/', '_', $scope->getStep()->getText());
 
-      //  Remove quotes from the test step name.
-      $failed_test_step = preg_replace('/[^a-zA-Z0-9\-]+/', '_', $failed_test_step);
+    // Set the screenshot location.
+    $filePath = $this->parameters['screenshots'];
 
-      //  Set the screenshot location
-      $filePath = $this->parameters['screenshots'];
-
-      if ($driver instanceof \Behat\Mink\Driver\BrowserKitDriver) {
-        $html_data = $this->getSession()->getDriver()->getContent();
-        $fileName = date(self::DATE_FORMAT_CONCISE) . '-' . $failed_test_step . '.html';
-        file_put_contents($filePath . '/' . $fileName, $html_data);
-        return;
-      }
-
-      if ($driver instanceof \Behat\Mink\Driver\Selenium2Driver) {
-        $fileName = date(self::DATE_FORMAT_CONCISE) . '-' . $failed_test_step . '.jpg';
-        $this->saveScreenshot($fileName, $filePath);
-        return;
-      }
+    $driver = $this->getSession()->getDriver();
+    $filename_prefix = date(self::DATE_FORMAT_CONCISE) . '-' . $failed_test_step;
+    if ($driver instanceof \Behat\Mink\Driver\BrowserKitDriver) {
+      $html_data = $this->getSession()->getDriver()->getContent();
+      $fileName = $filename_prefix . '.html';
+      file_put_contents($filePath . '/' . $fileName, $html_data);
+    }
+    elseif ($driver instanceof \Behat\Mink\Driver\Selenium2Driver) {
+      $fileName = $filename_prefix . '.jpg';
+      $this->saveScreenshot($fileName, $filePath);
     }
   }
   /*******************************************************************************
