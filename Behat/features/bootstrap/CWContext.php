@@ -149,7 +149,7 @@ class CWContext extends RawDrupalContext implements SnippetAcceptingContext {
       $failed_test_step = $scope->getStep()->getText();
 
       //  Remove quotes from the test step name.
-      $failed_test_step = str_replace('"', '', $failed_test_step);
+      $failed_test_step = preg_replace('/[^a-zA-Z0-9\-]+/', '_', $failed_test_step);
 
       //  Set the screenshot location
       $filePath = $this->parameters['screenshots'];
@@ -495,34 +495,26 @@ JS;
     }
   }
 
-
   /**
    * @Given I verify that value :value is not present in dropdown :dropdown
    * This function will check that a value is not present in a dropdown
    */
   public function check($value, $dropdown) {
-    // Check the dropdown exists
-    $dropdown = $this->getSession()->getPage()->findField($dropdown);
-    if (NULL === $dropdown) {
-      throw new CWContextException("The element " . $dropdown . " does not exist");
+    $dropdownElement = $this->getSession()->getPage()->findField($dropdown);
+    if (!is_object($dropdownElement)) {
+      throw new CWContextException("The element $dropdown does not exist");
     }
-    else {
-      // Get an array of all the entries in the dropdown
-      $handler = $this->getSession()->getSelectorsHandler();
-      $optionElements = $dropdown->findAll('named', array(
-        'option',
-        $handler->selectorToXpath('css', 'option')
-      ));
 
-      //  Loop through the contents and ensure $value is not present
-      foreach ($optionElements as $entry) {
-        if (strtoupper($entry->getText()) == (strtoupper($value))) {
-          throw new CWContextException("The value '{$value}' is present in the dropdown when it should not be.");
-        }
+    // Get an array of all the entries in the dropdown.
+    $optionElements = $dropdownElement->findAll('xpath', '//option');
+
+    // Loop through the contents and ensure $value is not present.
+    foreach ($optionElements as $entry) {
+      if (strtoupper($entry->getText()) === strtoupper($value)) {
+        throw new CWContextException("The value '$value' is present in the dropdown when it should not be.");
       }
     }
-   }
-
+  }
 
   /**
    * @Given I click on the radiobutton with :label label
